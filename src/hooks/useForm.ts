@@ -55,8 +55,8 @@ export const useForm = <T>(props: FormOptions<T>): FormReturnType<T> => {
             }
             if (isInputCorrect && props?.onSubmit) {
                 const result = await props?.onSubmit(values)
+                console.log({ result, check: "success" })
                 setIsSubmitting(false)
-                console.log({ result: "Success" })
             }
         } catch (error) {
             const mappedErrors = mapServerErrors(error, values);
