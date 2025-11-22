@@ -1,0 +1,1 @@
+export type FormValueTypes<T extends Record<string, unknown>> = T
