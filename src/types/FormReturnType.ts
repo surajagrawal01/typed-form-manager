@@ -6,8 +6,9 @@ export type FormReturnType<T> = {
     touched?: Partial<Record<keyof T, boolean>>,
     reset: () => void,
     handleChange: (name: keyof T, value: T[keyof T]) => void,
-    handleSubmit: () => void | Promise<void>,
+    handleSubmit: (e: React.SyntheticEvent<HTMLFormElement>) => void | Promise<void>,
     handleBlur: (name: keyof T) => void,
     setErrors: (newErrors: FormErrorsType<T>) => void,
-    setFieldValue: (name: keyof T, value: T[keyof T]) => void
+    setFieldValue: (name: keyof T, value: T[keyof T]) => void,
+    isSubmitting: boolean
 }
