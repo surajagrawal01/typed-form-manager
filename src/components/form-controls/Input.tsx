@@ -1,3 +1,5 @@
+import { ErrorMessage } from "../common/ErrorMessage";
+
 interface InputTypeProps<TFormValues, TName extends keyof TFormValues> {
     label: string;
     name: TName;
@@ -27,7 +29,7 @@ export const Input = <
                     className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                 />
 
-                {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+                {error && <ErrorMessage message={error} />}
             </div>
         </>
     )

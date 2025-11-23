@@ -23,7 +23,7 @@ export function mapServerErrors<T>(
 
     // Step 4: Build empty errors matching T
     const mapped: FormErrorsType<T> = {} as FormErrorsType<T>;
-    const formKeys = Object.keys(values) as (keyof T)[];
+    const formKeys = Object.keys(values as any) as (keyof T)[];
 
     // Step 5: Copy only matching keys
     for (const key of formKeys) {
