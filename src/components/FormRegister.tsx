@@ -1,5 +1,14 @@
+import z from "zod";
 import { useFormRegister } from "../hooks/useFormRegister";
 import { InputRegister } from "./form-controls-register/InputRegister";
+import { zodResolver } from "./resolvers/zodResolver";
+
+const schema = z.object({
+    name: z.string().min(3, "Username must be at least 3 chars"),
+    email: z.email("email should be a valid mail id"),
+    age: z.number().min(1, "Age must be > 0")
+});
+
 
 export const FormRegister = () => {
     const
@@ -10,13 +19,7 @@ export const FormRegister = () => {
             isSubmitting
         } = useFormRegister({
             initialValues: { name: "", email: "", age: 0 },
-            validate: (values) => {
-                return {
-                    name: values.name ? undefined : "Name required",
-                    email: values.email ? undefined : "Email required",
-                    age: values.age > 0 ? undefined : "Age must be greater than 0",
-                };
-            },
+            validate: zodResolver(schema),
             validateOn: 'blur',
             onSubmit: (values) => {
                 // API CALL HAPPENS HERE

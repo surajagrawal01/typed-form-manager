@@ -7,6 +7,38 @@ import { mapServerErrors } from "../utils/mapServerError"
 import type { RegisterReturnType } from "../types/RegisterRetunType"
 import type { FormRegisterReturnType } from "../types/FormRegisterReturnType"
 
+export const normalizeFieldValue = <T>(
+    name: keyof T,
+    value: unknown,
+    initialValues: T
+): T[keyof T] => {
+    const originalValue = initialValues[name];
+
+    // CASE 1: Original field is a number → convert safely
+    if (typeof originalValue === "number") {
+        // allow empty input → convert to empty string (user still typing)
+        if (value === "") return "" as T[keyof T];
+
+        const num = Number(value);
+
+        // If it's not a valid number → return string as-is (user typing invalid char)
+        if (Number.isNaN(num)) return value as T[keyof T];
+
+        return num as T[keyof T];
+    }
+
+    // CASE 2: Original is boolean
+    if (typeof originalValue === "boolean") {
+        if (value === "true") return true as T[keyof T];
+        if (value === "false") return false as T[keyof T];
+        return originalValue as T[keyof T]; // fallback
+    }
+
+    // CASE 3: Default → return the string value
+    return value as T[keyof T];
+};
+
+
 export const useFormRegister = <T>(props: FormOptions<T>): FormRegisterReturnType<T> => {
     const [values, setValues] = useState<T>(props?.initialValues)
     const [errors, setErrors] = useState<FormErrorsType<T>>(buildEmptyErrorsFromValues(props.initialValues))
@@ -16,15 +48,21 @@ export const useFormRegister = <T>(props: FormOptions<T>): FormRegisterReturnTyp
     const validateOnRef = useRef<string>(props?.validateOn || "submit")
 
     const handleChange = (name: keyof T, value: T[keyof T]): void => {
-        const newValues = { ...values, [name]: value }
-        setValues(newValues)
-        if (props?.validate) {
-            if (validateOnRef.current == "change") {
-                const fieldError = validateField({ name, values: newValues, validate: props.validate })
-                setErrors({ ...errors, [name]: fieldError })
-            }
+        const normalizedValue = normalizeFieldValue(name, value, initialValuesRef.current);
+
+        const newValues = { ...values, [name]: normalizedValue };
+        setValues(newValues);
+
+        if (props?.validate && validateOnRef.current === "change") {
+            const fieldError = validateField({
+                name,
+                values: newValues,
+                validate: props.validate
+            });
+
+            setErrors({ ...errors, [name]: fieldError });
         }
-    }
+    };
 
     const handleBlur = (name: keyof T) => {
         const updatedTouch = { ...touched, [name]: true }
