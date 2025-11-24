@@ -2,12 +2,10 @@
 
 A lightweight, type-safe, reusable form management library built using React + TypeScript, inspired by Formik and React-Hook-Form — but fully custom and minimal.
 
-This README currently includes temporary folder structure + explanation, and will be expanded with examples & full documentation later.
-
 ---
 
 ## Folder Structure
-<img width="767" height="509" alt="image" src="https://github.com/user-attachments/assets/b9350f3f-6b04-40c1-bf83-2b77f4dcaa26" />
+<img width="769" height="712" alt="image" src="https://github.com/user-attachments/assets/5445ff98-bfd3-44bc-8949-c865713857db" />
 
 ---
 
@@ -44,7 +42,15 @@ TypeScript definitions for the entire library.
   - reset  
   - setErrors  
   - setFieldValue  
-  - isSubmitting  
+  - isSubmitting
+  
+- **FormRegisterReturnType.ts**
+  - register: function to register a form field with the given name and validation
+  - reset: function to reset the form values and errors
+  - handleSubmit: form submit handler
+  - setErrors: function to manually set form errors
+  - setFieldValue: function to set the value of a specific field
+  - isSubmitting: boolean flag indicating if the form is currently submitting 
 
 ### utils/helper.ts  
 Internal utility helpers:
@@ -74,17 +80,12 @@ Internal utility helpers:
 - [x] Server error mapping  
 - [x] Immutable helpers  
 - [x] Zero external form libraries  
+- [x] Zod schema validation integration via useFormRegister
+- [x] Zero external form libraries
 
 ---
+## Example Usage
+<img width="747" height="627" alt="image" src="https://github.com/user-attachments/assets/6ece88cd-37dc-4d02-93bb-eb57e6d299f4" />
 
-## Upcoming Work
-- [ ] Full usage examples  
-- [ ] register() API (Phase 2)  
-- [ ] Schema validation integration (Zod/Yup/Valibot)  
-- [ ] Dirty/pristine tracking  
-- [ ] Debounced validation  
-- [ ] More helpers  
-- [ ] Vitest unit tests  
-- [ ] Publish to npm  
 
 ---
